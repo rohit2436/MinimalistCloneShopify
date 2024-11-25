@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Button, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Button, TextInput, Modal } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Progress from 'react-native-progress';
@@ -19,8 +19,21 @@ const ShopNow = () => {
   const [number, setNumber] = useState(0);
   const [visible, setVisible] = useState(false);
   const [ideal, setIdeal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
+
+
+
   return (
     <ScrollView>
+      <Modal visible={modalVisible} transparent={true}>
+        <View style={{justifyContent:"center", alignItems:"center",top:"35%"}}>
+        <View style={{justifyContent:"center", alignItems:"center", borderWidth:1, height:150,width:250, elevation:10,backgroundColor:"white",borderRadius:20}}>
+          <Text style={{padding:20}}>This is Static Page</Text>
+          <Button title='Close' color={"black"} onPress={()=>setModalVisible(false)}/>
+        </View>
+        </View>
+
+      </Modal>
       <View>
 
         <Image style={{ height: 500, width: "100%" }} source={{ uri: "https://sfycdn.speedsize.com/56385b25-4e17-4a9a-9bec-c421c18686fb/https://beminimalist.co/cdn/shop/files/29_1600x.png?v=1723184721" }} />
