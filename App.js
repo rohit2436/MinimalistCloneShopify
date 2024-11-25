@@ -2,7 +2,7 @@
 
 import 'react-native-gesture-handler';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Main from './components/Main'
 import {NavigationContainer} from "@react-navigation/native"
 import {createNativeStackNavigator} from "@react-navigation/native-stack"
@@ -22,12 +22,15 @@ import Address from './components/Address';
 import { specifiedSDLRules } from 'graphql/validation/specifiedRules';
 import CheckoutPage from './components/CheckoutPage';
 import WebViewScreen from './components/WebViewScreen';
+import BestSellers from './components/BestSellers';
+import client from './shopifyApi/shopifyClient';
+import {CartProvider, useCart} from "./components/CartContext"
 
 
 
 
 // Apollo Client setup
-const client = new ApolloClient({
+const apolloClient = new ApolloClient({
   uri: 'https://rohitapitesting.myshopify.com/api/2024-10/graphql.json', // Storefront API endpoint
   cache: new InMemoryCache(),
   headers: {
@@ -37,34 +40,50 @@ const client = new ApolloClient({
 
 
 
+// Retrieve an existing checkout
+const getCheckout = async () => {
+  console.log("get items")
+  const checkoutId = await AsyncStorage.getItem('checkoutId');
+  if (checkoutId) {
+    return await client.checkout.fetch(checkoutId);
+  }
+  console.log("getCheckout", checkoutId)
+  return createCheckout();
+};
 
-
-
-// // Apollo Client setup
-// const client = new ApolloClient({
-//   uri: 'https://hitesh-testing.myshopify.com/api/2023-10/graphql.json', // Storefront API endpoint
-//   cache: new InMemoryCache(),
-//   headers: {
-//     'X-Shopify-Storefront-Access-Token': 'f21a87178a6a0278977b6d4a3f674f11', // Use a valid Storefront API token
-//   },
-// });
-
-
-
-
-
-
-
-
-//
 
 const App = () => {
+
+
+  const { cartCount } = useCart();
 
   const Stack = createNativeStackNavigator();
   const Drawer = createDrawerNavigator();
   const Tab = createBottomTabNavigator();
   const [search,setSearch]=useState(true);
 
+
+  
+
+
+
+  
+useEffect(() => {
+  const fetchCheckout = async () => {
+   
+    const checkoutData = await getCheckout();
+    // setCheckout(checkoutData);
+    // calculateTotalPrice(checkoutData.lineItems); // Calculate total price
+    console.log("checkout data:", checkoutData)   
+  };
+
+  fetchCheckout();
+}, []);
+
+
+
+
+  
 
 {/* <Stack.Screen name="ProductList" component={ProductList}/>
         
@@ -81,8 +100,8 @@ const App = () => {
       <Stack.Screen name="ProductList" component={ProductList} />
       <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen}/>
       <Stack.Screen name="CollectionDetailsScreen" component={CollectionDetailsScreen}/>
-      <Stack.Screen name="CheckoutPage" component={CheckoutPage}/>
-      <Stack.Screen name="WebViewScreen" component={WebViewScreen}/>
+      {/* <Stack.Screen name="CheckoutPage" component={CheckoutPage}/> */}
+      {/* <Stack.Screen name="WebViewScreen" component={WebViewScreen}/> */}
       <Stack.Screen name="Address" component={Address}/>
       <Stack.Screen name="Cart" component={Cart}/>
     </Stack.Navigator>
@@ -96,9 +115,26 @@ const App = () => {
     </Stack.Navigator>
   )
 
+  const HomeComponent=()=>(
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Home" component={Main}/>
+      <Stack.Screen name="ProductList" component={ProductList} />
+      <Stack.Screen name="CollectionListScreen" component={CollectionListScreen}/>
+      <Stack.Screen name="CollectionDetailsScreen" component={CollectionDetailsScreen}/>
+      {/* <Stack.Screen name="CheckoutPage" component={CheckoutPage}/> */}
+      {/* <Stack.Screen name="WebViewScreen" component={WebViewScreen}/> */}
+      <Stack.Screen name='BestSellers' component={BestSellers}/>
+      <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen}/>
+      <Stack.Screen name="Address" component={Address}/>
+      <Stack.Screen name="Cart" component={Cart}/>
+
+    </Stack.Navigator>
+  )
+
 
   return (
-<ApolloProvider client={client}>
+
+<ApolloProvider client={apolloClient}>
 
 
 
@@ -109,7 +145,7 @@ const App = () => {
      
 
       <Tab.Navigator initialRouteName='Home'>
-        <Tab.Screen name="Home" component={Main} 
+        <Tab.Screen name="Home" component={HomeComponent} 
 
         options={{
           tabBarIcon:() => {
@@ -180,10 +216,17 @@ const App = () => {
 
 
 
-<Tab.Screen name="CheckoutPage" component={CheckOutPageComponent}  options={{tabBarIcon:() => {
+<Tab.Screen name="CheckoutPage" component={CheckOutPageComponent}  options={{
+  tabBarBadge: cartCount > 0 ? cartCount : 0, // Show badge only if cartCount > 0
+  tabBarBadgeStyle:{backgroundColor:"black", color:"white",fontWeight:800,borderColor:"white",borderWidth:1},
+  
+  tabBarIcon:() => {
          return<Icon name={"cart-plus"} size={22} color={"black"} />;
       },
-    }} />
+      
+    }} 
+    
+    />
 
         
       </Tab.Navigator>

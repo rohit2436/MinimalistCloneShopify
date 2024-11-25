@@ -23,7 +23,7 @@ const ProductList = ({ navigation }) => {
           numColumns={2}
           renderItem={({ item }) => (
             <View style={{ height: 500, width: "50%", padding: 10 }}>
-              <TouchableOpacity onPress={() => navigation.navigate("ProductDetailsScreen", { productId: item.node.id })}>
+              
                 <Image style={{ width: "100%", height: 200 }} source={{ uri: item.node.images.edges[0].node.src }} />
                 <View style={{height:100}}>
                 <Text style={{ paddingTop: 10, fontSize: 18, fontWeight: 500, textAlign: "left" }}>{item.node.title}</Text>
@@ -39,9 +39,10 @@ const ProductList = ({ navigation }) => {
         /> */}
                 </View>
                 <Text style={{ fontSize: 18, paddingTop: 10, paddingBottom: 20, fontWeight: "500" }}>{'\u20B9'} 275</Text>
-                <Button color={"black"} title='Add To Cart' />
+                <Button color={"black"} title='See Details' 
+                onPress={() => navigation.navigate("ProductDetailsScreen", { productId: item.node.id })}
+                />
 
-              </TouchableOpacity>
 
               <View style={{ position: "absolute", bottom: 300, right: 15 }}>
                 {/* {like ?
