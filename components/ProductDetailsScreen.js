@@ -1,6 +1,6 @@
 // ProductDetailsScreen.js
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { View, Text, Image, ScrollView, Dimensions, StyleSheet, TouchableOpacity, Button, Modal } from 'react-native';
 import { gql, useQuery } from '@apollo/client';
 import Swiper from 'react-native-swiper';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,6 +11,8 @@ import Customer from './Customer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import client from "../shopifyApi/shopifyClient"
 import AddToCartButton from './AddToCartButton';
+import { Rating, AirbnbRating } from 'react-native-ratings';
+import * as Progress from 'react-native-progress';
 
 // image carousel
 const { width: screenWidth } = Dimensions.get('window');
@@ -74,6 +76,8 @@ const ProductDetailsScreen = ({ navigation,route }) => {
   });
 
   const [number, setNumber] = useState(1);
+  const [review, setReview] = useState(4);
+  const [reviewSign, setReviewSign] = useState(false);
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
@@ -151,6 +155,149 @@ console.log(product?.variants?.edges[0]?.node?.id)
 
       {/* <Text style={styles.title}>You May Also Like</Text> */}
       <Customer/>
+
+
+
+
+        
+
+      <View style={{ padding: 10, alignItems: "center", justifyContent: "center", marginTop: 20 }}>
+            <Text style={{ fontSize: 25, fontWeight: 500, textAlign: "center", marginBottom: 20 }}>Customer Review</Text>
+            <View style={{ flexDirection: "row", }}>
+              <Text style={{ fontSize: 60, fontWeight: 700, marginRight: 10 }}>{review}</Text>
+
+              <View style={{ justifyContent: "flex-start", alignItems: "flex-start", }}>
+                <View style={{ marginTop: 10 }}><AirbnbRating
+                  size={18}
+                  showRating={false}
+                  selectedColor='black'
+                  defaultRating={review}
+                  isDisabled={true}
+                />
+                  <Text style={{ fontSize: 15, textAlign: "left", marginTop: 5 }}>Based on 24 Review</Text></View>
+
+              </View>
+
+            </View>
+
+
+            {/* //making 5star and bar */}
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: 500, textAlignVertical: "center" }}>5</Text>
+              <AirbnbRating
+                size={18}
+                showRating={false}
+                selectedColor='black'
+                defaultRating={1}
+                isDisabled={true}
+                count={1
+
+                }
+              />
+              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.3} width={170} color='black' /></View>
+              <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>17</Text>
+            </View>
+
+
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: 500, textAlignVertical: "center" }}>4</Text>
+              <AirbnbRating
+                size={18}
+                showRating={false}
+                selectedColor='black'
+                defaultRating={1}
+                isDisabled={true}
+                count={1
+
+                }
+              />
+              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.1} width={170} color='black' /></View>
+              <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>01</Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: 500, textAlignVertical: "center" }}>3</Text>
+              <AirbnbRating
+                size={18}
+                showRating={false}
+                selectedColor='black'
+                defaultRating={1}
+                isDisabled={true}
+                count={1
+
+                }
+              />
+              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0} width={170} color='black' /></View>
+              <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>00</Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: 500, textAlignVertical: "center" }}>2</Text>
+              <AirbnbRating
+                size={18}
+                showRating={false}
+                selectedColor='black'
+                defaultRating={1}
+                isDisabled={true}
+                count={1
+
+                }
+              />
+              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.1} width={170} color='black' /></View>
+              <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>01</Text>
+            </View>
+
+            <View style={{ flexDirection: "row" }}>
+              <Text style={{ fontWeight: 500, textAlignVertical: "center" }}>1</Text>
+              <AirbnbRating
+                size={18}
+                showRating={false}
+                selectedColor='black'
+                defaultRating={1}
+                isDisabled={true}
+                count={1
+
+                }
+              />
+              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.2} width={170} color='black' /></View>
+              <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>01</Text>
+            </View>
+
+            <View style={{ margin: 25, width: 150, }}>
+              <Button title='Write A Review' color={"black"} onPress={()=>setReviewSign(true)}/>
+            </View>
+
+
+            {
+              <Modal animationType='slide' transparent={true} visible={reviewSign} onRequestClose={() => {
+                setModalVisible(false); // Handle back button press on Android
+              }}>
+                <View style={{ justifyContent: "center", alignItems: "center", top: "30%" }}>
+                  <View style={{ justifyContent: "center", alignItems: "center", height: 200, width: 300, padding: 20, margin: 20, backgroundColor: "white", borderRadius: 20, borderColor: "black", borderWidth: 1, elevation: 10 }}>
+                    <Text style={{ padding: 20 }}>Please Sign in to write a Review</Text>
+                    <View><Button color={"black"} title='      Close      ' onPress={() => setReviewSign(false)} />
+                    </View>
+                  </View>
+                </View>
+      
+              </Modal>
+            }
+</View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <Footer/>
     </ScrollView>
 

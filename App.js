@@ -205,10 +205,10 @@ useEffect(() => {
         
         />
    
-        <Tab.Screen name="ShopNow" component={ShopNow} options={{tabBarIcon:() => {
+        {/* <Tab.Screen name="ShopNow" component={ShopNow} options={{tabBarIcon:() => {
          return<Icon name={"table"} size={22} color={"black"} />;
       },
-    }}/>
+    }}/> */}
         {/* <Tab.Screen name="Cart" component={Cart}  options={{tabBarIcon:() => {
          return<Icon name={"cart-plus"} size={22} color={"black"} />;
       },

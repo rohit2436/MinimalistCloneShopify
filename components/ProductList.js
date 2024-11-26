@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { GET_PRODUCTS } from '../shopifyApi/queries'
 import { useQuery } from '@apollo/client';
 import { AirbnbRating } from 'react-native-ratings';
+import AddToCartButton from './AddToCartButton';
 
 const ProductList = ({ navigation }) => {
 
@@ -42,6 +43,12 @@ const ProductList = ({ navigation }) => {
                 <Button color={"black"} title='See Details' 
                 onPress={() => navigation.navigate("ProductDetailsScreen", { productId: item.node.id })}
                 />
+                      
+{/* <AddToCartButton
+            product={item.node}
+            quantity={1}
+            navigation={navigation}
+          /> */}
 
 
               <View style={{ position: "absolute", bottom: 300, right: 15 }}>
