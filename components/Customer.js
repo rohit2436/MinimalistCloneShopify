@@ -26,13 +26,13 @@ const Customer = () => {
               isDisabled={true}
             />
           </View>
-          <Text style={{ fontSize: 15, fontWeight: 500 }}> Best for only skin</Text>
-          <Text style={{ fontSize: 15, fontWeight: 300, paddingTop: 20 }}>It's only light and leave no white marks or heaviness..one of the best for oily acne prone skin</Text>
+          <Text style={{ fontSize: 15, fontWeight: 500 }}> Best Product</Text>
+          <Text style={{ fontSize: 15, fontWeight: 300, paddingTop: 20 }}>Very lightweight and very comfortable to wear. Best quality with this price range.</Text>
 
 
           <View style={{ flexDirection: "row", marginTop: 70 }}>
-            <Image style={{ height: 50, width: 50 }} source={{ uri: "https://sfycdn.speedsize.com/56385b25-4e17-4a9a-9bec-c421c18686fb/https://beminimalist.co/cdn/shop/files/29_1600x.png?v=1723184721" }} />
-            <Text style={{ textAlignVertical: "center", paddingLeft: 20 }}>Hypochlorous Acid Skin Relief Spray 150 ppm</Text>
+            <Image style={{ height: 50, width: 50 }} source={{ uri: "https://png.pngtree.com/thumb_back/fh260/background/20220929/pngtree-shoes-promotion-banner-background-image_1466238.jpg" }} />
+            <Text style={{ textAlignVertical: "center", paddingLeft: 20 }}>Stylish footware, feel like a feather</Text>
           </View>
         </View>
 

@@ -7,7 +7,7 @@ import client from "../shopifyApi/shopifyClient";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCart,updateCartCount } from './CartContext';
+import { useCart, updateCartCount } from './CartContext';
 
 // Create a new checkout
 const createCheckout = async () => {
@@ -25,7 +25,7 @@ const getCheckout = async () => {
     return await client.checkout.fetch(checkoutId);
   }
   console.log("getCheckout", checkoutId)
-  
+
   return createCheckout();
 };
 
@@ -137,7 +137,7 @@ const CheckoutPage = ({ navigation }) => {
     }, 0);
     setTotalPrice(total);
     updateCartCount(lineItems.length);
-    
+
   };
 
   // Update item quantity
@@ -173,8 +173,8 @@ const CheckoutPage = ({ navigation }) => {
     const updatedCheckout = await client.checkout.fetch(checkoutId);
     setCheckout(updatedCheckout);
     calculateTotalPrice(updatedCheckout.lineItems); // Recalculate total price
-   
-   
+
+
   };
 
   if (!checkout) {
@@ -197,115 +197,115 @@ const CheckoutPage = ({ navigation }) => {
     <View>
       <ScrollView style={{ padding: 15, backgroundColor: "white" }}>
         <View style={styles.addressSection}>
-          {isEditing ? 
-           <Modal animationType='slide' transparent={false} visible={contactModal} onRequestClose={() => {
-            setContactModal(false); // Handle back button press on Android
-          }}>
-            <ScrollView style={{ padding: 15, backgroundColor: "white" }}>
-          (
-            <View>
-              <Text style={styles.addressLabel}>Contact Information</Text>
-
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>First Name</Text>
-              <TextInput
-                placeholder="First Name"
-                placeholderTextColor={"grey"}
-                value={address.firstName || ''}
-                onChangeText={(text) => setAddress({ ...address, firstName: text })}
-                style={styles.input}
-
-              />
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Last Name</Text>
-              <TextInput
-                placeholder="Last Name"
-                placeholderTextColor={"grey"}
-                value={address.lastName || ''}
-                onChangeText={(text) => setAddress({ ...address, lastName: text })}
-                style={styles.input}
-              />
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Phone Number</Text>
-              <TextInput
-                placeholder="Phone Number"
-                placeholderTextColor={"grey"}
-                value={address.phone || ''}
-                onChangeText={(text) => setAddress({ ...address, phone: text })}
-                style={styles.input}
-              />
-
-              <Text style={[styles.addressLabel, {marginTop:25}]}>Shipping Address</Text>
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Address Line 1</Text>
-              <TextInput
-                placeholder="Address Line 1"
-                placeholderTextColor={"grey"}
-                value={address.address1 || ''}
-                onChangeText={(text) => setAddress({ ...address, address1: text })}
-                style={styles.input}
-              />
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Address Line 2</Text>
-              <TextInput
-                placeholder="Address Line 2"
-                placeholderTextColor={"grey"}
-                value={address.address2 || ''}
-                onChangeText={(text) => setAddress({ ...address, address2: text })}
-                style={styles.input}
-              />
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>City</Text>
-              <TextInput
-                placeholder="City"
-                placeholderTextColor={"grey"}
-                value={address.city || ''}
-                onChangeText={(text) => setAddress({ ...address, city: text })}
-                style={styles.input}
-              />
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>State</Text>
-              <TextInput
-                placeholder="State/Province"
-                placeholderTextColor={"grey"}
-                value={address.province || ''}
-                onChangeText={(text) => setAddress({ ...address, province: text })}
-                style={styles.input}
-              />
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Country</Text>
-              <TextInput
-                placeholder="Country"
-                placeholderTextColor={"grey"}
-                value={address.country || ''}
-                onChangeText={(text) => setAddress({ ...address, country: text })}
-                style={styles.input}
-              />
-              <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Postal Code</Text>
-              <TextInput
-                placeholder="Postal Code"
-                placeholderTextColor={"grey"}
-                value={address.zip || ''}
-                onChangeText={(text) => setAddress({ ...address, zip: text })}
-                style={styles.input}
-              />
-              
-
-              <Button title="Save Address" color={"black"} onPress={()=>{saveAddress(), setContactModal(false)}} />
-           <View style={{marginBottom:50}}></View>
-            </View>
-          )
-          </ScrollView>
-          </Modal>
-           :
-
-         
-            (
-              <View style={{justifyContent:"center", alignItems:"center"}}>
-              <View style={{ flexDirection: "row", width: 360, justifyContent: "space-between" }}>
+          {isEditing ?
+            <Modal animationType='slide' transparent={false} visible={contactModal} onRequestClose={() => {
+              setContactModal(false); // Handle back button press on Android
+            }}>
+              <ScrollView style={{ padding: 15, backgroundColor: "white" }}>
+                (
                 <View>
-                  <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 600 }}>Deliver to: {address.firstName} {address.lastName} , {address.zip}</Text>
-                  <Text>{address.address1}, {address.city}, {address.province}</Text>
-                </View>
-                <TouchableOpacity onPress={() => {setIsEditing(true) , setContactModal(true)}}>
-                  <View style={{ borderWidth: 1, height: 40, width: 80, justifyContent: "center", alignItems: "center" }}>
-                    <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 600 }}>Change</Text>
-                  </View>
-                </TouchableOpacity>
+                  <Text style={styles.addressLabel}>Contact Information</Text>
 
-              </View>
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>First Name</Text>
+                  <TextInput
+                    placeholder="First Name"
+                    placeholderTextColor={"grey"}
+                    value={address.firstName || ''}
+                    onChangeText={(text) => setAddress({ ...address, firstName: text })}
+                    style={styles.input}
+
+                  />
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Last Name</Text>
+                  <TextInput
+                    placeholder="Last Name"
+                    placeholderTextColor={"grey"}
+                    value={address.lastName || ''}
+                    onChangeText={(text) => setAddress({ ...address, lastName: text })}
+                    style={styles.input}
+                  />
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Phone Number</Text>
+                  <TextInput
+                    placeholder="Phone Number"
+                    placeholderTextColor={"grey"}
+                    value={address.phone || ''}
+                    onChangeText={(text) => setAddress({ ...address, phone: text })}
+                    style={styles.input}
+                  />
+
+                  <Text style={[styles.addressLabel, { marginTop: 25 }]}>Shipping Address</Text>
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Address Line 1</Text>
+                  <TextInput
+                    placeholder="Address Line 1"
+                    placeholderTextColor={"grey"}
+                    value={address.address1 || ''}
+                    onChangeText={(text) => setAddress({ ...address, address1: text })}
+                    style={styles.input}
+                  />
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Address Line 2</Text>
+                  <TextInput
+                    placeholder="Address Line 2"
+                    placeholderTextColor={"grey"}
+                    value={address.address2 || ''}
+                    onChangeText={(text) => setAddress({ ...address, address2: text })}
+                    style={styles.input}
+                  />
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>City</Text>
+                  <TextInput
+                    placeholder="City"
+                    placeholderTextColor={"grey"}
+                    value={address.city || ''}
+                    onChangeText={(text) => setAddress({ ...address, city: text })}
+                    style={styles.input}
+                  />
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>State</Text>
+                  <TextInput
+                    placeholder="State/Province"
+                    placeholderTextColor={"grey"}
+                    value={address.province || ''}
+                    onChangeText={(text) => setAddress({ ...address, province: text })}
+                    style={styles.input}
+                  />
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Country</Text>
+                  <TextInput
+                    placeholder="Country"
+                    placeholderTextColor={"grey"}
+                    value={address.country || ''}
+                    onChangeText={(text) => setAddress({ ...address, country: text })}
+                    style={styles.input}
+                  />
+                  <Text style={{ textAlignVertical: "center", fontSize: 15, fontWeight: 500, marginBottom: 10, marginTop: 10 }}>Postal Code</Text>
+                  <TextInput
+                    placeholder="Postal Code"
+                    placeholderTextColor={"grey"}
+                    value={address.zip || ''}
+                    onChangeText={(text) => setAddress({ ...address, zip: text })}
+                    style={styles.input}
+                  />
+
+
+                  <Button title="Save Address" color={"black"} onPress={() => { saveAddress(), setContactModal(false) }} />
+                  <View style={{ marginBottom: 50 }}></View>
+                </View>
+                )
+              </ScrollView>
+            </Modal>
+            :
+
+
+            (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <View style={{ flexDirection: "row", width: 360, justifyContent: "space-between" }}>
+                  <View>
+                    <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 600 }}>Deliver to: {address.firstName} {address.lastName} , {address.zip}</Text>
+                    <Text>{address.address1}, {address.city}, {address.province}</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => { setIsEditing(true), setContactModal(true) }}>
+                    <View style={{ borderWidth: 1, height: 40, width: 80, justifyContent: "center", alignItems: "center" }}>
+                      <Text style={{ textAlign: "center", fontSize: 15, fontWeight: 600 }}>Change</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                </View>
               </View>
 
 
@@ -329,7 +329,7 @@ const CheckoutPage = ({ navigation }) => {
               //   <Button title="Edit Address" color={"grey"} onPress={() => setIsEditing(true)} />
               // </View>
             )
-           
+
 
           }
         </View>
@@ -495,6 +495,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
+    elevation:5
   },
   item: { flexDirection: 'row', marginBottom: 20 },
 })
