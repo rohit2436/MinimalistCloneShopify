@@ -6,25 +6,22 @@ import React, { useEffect, useState } from 'react'
 import Main from './components/Main'
 import {NavigationContainer} from "@react-navigation/native"
 import {createNativeStackNavigator} from "@react-navigation/native-stack"
-import ShopNow from './components/ShopNow'
 import {createDrawerNavigator} from "@react-navigation/drawer"
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-gesture-handler';
 import { ApolloClient, InMemoryCache, ApolloProvider, } from '@apollo/client';
-import ProductLists from './shopifyApi/ProductLists';
 import ProductList from './components/ProductList';
 import ProductDetailsScreen from './components/ProductDetailsScreen';
 import CollectionListScreen from './components/CollectionListScreen';
 import CollectionDetailsScreen from './components/CollectionDetailsScreen';
-import Cart from './components/Cart';
-import Address from './components/Address';
-import { specifiedSDLRules } from 'graphql/validation/specifiedRules';
 import CheckoutPage from './components/CheckoutPage';
 import WebViewScreen from './components/WebViewScreen';
 import BestSellers from './components/BestSellers';
 import client from './shopifyApi/shopifyClient';
 import {CartProvider, useCart} from "./components/CartContext"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createCheckout } from './shopifyApi/checkoutHelper';
 
 
 
@@ -43,7 +40,7 @@ const apolloClient = new ApolloClient({
 // Retrieve an existing checkout
 const getCheckout = async () => {
   console.log("get items")
-  const checkoutId = await AsyncStorage.getItem('checkoutId');
+  const checkoutId:any = await AsyncStorage.getItem('checkoutId');
   if (checkoutId) {
     return await client.checkout.fetch(checkoutId);
   }
@@ -100,10 +97,7 @@ useEffect(() => {
       <Stack.Screen name="ProductList" component={ProductList} />
       <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen}/>
       <Stack.Screen name="CollectionDetailsScreen" component={CollectionDetailsScreen}/>
-      {/* <Stack.Screen name="CheckoutPage" component={CheckoutPage}/> */}
-      {/* <Stack.Screen name="WebViewScreen" component={WebViewScreen}/> */}
-      <Stack.Screen name="Address" component={Address}/>
-      <Stack.Screen name="Cart" component={Cart}/>
+    
     </Stack.Navigator>
   )
 
@@ -121,12 +115,10 @@ useEffect(() => {
       <Stack.Screen name="ProductList" component={ProductList} />
       <Stack.Screen name="CollectionListScreen" component={CollectionListScreen}/>
       <Stack.Screen name="CollectionDetailsScreen" component={CollectionDetailsScreen}/>
-      {/* <Stack.Screen name="CheckoutPage" component={CheckoutPage}/> */}
-      {/* <Stack.Screen name="WebViewScreen" component={WebViewScreen}/> */}
       <Stack.Screen name='BestSellers' component={BestSellers}/>
       <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen}/>
-      <Stack.Screen name="Address" component={Address}/>
-      <Stack.Screen name="Cart" component={Cart}/>
+     
+      
 
     </Stack.Navigator>
   )
@@ -135,12 +127,6 @@ useEffect(() => {
   return (
 
 <ApolloProvider client={apolloClient}>
-
-
-
-
-
-
     <NavigationContainer>
      
 

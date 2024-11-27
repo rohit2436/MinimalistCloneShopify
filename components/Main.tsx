@@ -1,5 +1,5 @@
 
-import { Image, StyleSheet, Text, View, Button, ScrollView, ImageBackground, TouchableOpacity, FlatList } from 'react-native'
+import { Image, StyleSheet, Text, View, Button, ScrollView, ImageBackground, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import BestSellers from './BestSellers';
@@ -42,8 +42,8 @@ const GET_COLLECTIONS = gql`
 
 
 
-const Main = (props) => {
-  const navigation = useNavigation();
+const Main:any = () => {
+  const navigation = useNavigation<any>();
 
   
   useEffect(() => {
@@ -62,8 +62,8 @@ const Main = (props) => {
     variables: { id: "gid://shopify/Collection/324936204437" },
   });
 
-  const [collections, setCollections] = useState([]);
-  const [loadingbar, setLoading] = useState(true);
+  const [collections, setCollections] = useState<any>([]);
+  const [loadingbar, setLoading] = useState<any>(true);
 
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
@@ -81,7 +81,7 @@ const Main = (props) => {
 
 
 
-  const renderCollection = ({ item }) => (
+  const renderCollection = ({ item }:any) => (
 
     <TouchableOpacity
           onPress={() =>
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 4,
-    zIndex: 1, // Ensures text is above the overlay
+   
   },
   collectionName: {
     marginTop: 8,

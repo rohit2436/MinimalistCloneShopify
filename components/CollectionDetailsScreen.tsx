@@ -4,6 +4,7 @@ import { FlatList, View, Text, Image, TouchableOpacity, Button } from 'react-nat
 import { gql, useQuery } from '@apollo/client';
 import AddToCartButton from './AddToCartButton';
 import client from '../shopifyApi/shopifyClient';
+import shopifyClient from '../shopifyApi/shopifyClient';
 
 const GET_COLLECTION_DETAILS = gql`
   query GetCollectionDetails($id: ID!) {
@@ -41,7 +42,7 @@ const GET_COLLECTION_DETAILS = gql`
   }
 `;
 
-const CollectionDetailsScreen = ({ route, navigation }) => {
+const CollectionDetailsScreen = ({ route, navigation }:any) => {
   const { collectionId } = route.params;
   // const collectionId = "gid://shopify/Collection/324935876757";
   console.log(collectionId)
@@ -56,20 +57,20 @@ const CollectionDetailsScreen = ({ route, navigation }) => {
 
 
    // Function to add product to cart
-   const handleAddToCart = async (product) => {
+   const handleAddToCart:any = async (product:any) => {
     try {
       // Get the variant ID for the first variant (you can customize this for more complex cart handling)
       const variantId = product.variants.edges[0].node.id;
 
       // Create a cart if it doesn't exist
-      let cart = await shopifyClient.checkout.create();
+      let cart:any = await shopifyClient.checkout.create();
 
       // Add the product variant to the cart
       const lineItemsToAdd = [{
         variantId: variantId,
         quantity: 1, // Adjust quantity if needed
       }];
-      const checkout = await shopifyClient.checkout.addLineItems(cart.id, lineItemsToAdd);
+      const checkout:any = await shopifyClient.checkout.addLineItems(cart.id, lineItemsToAdd);
 
       console.log('Product added to cart:', checkout);
       // You can also navigate to the cart screen after adding the product

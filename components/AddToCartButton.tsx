@@ -110,9 +110,9 @@ const getCheckout = async () => {
   return createCheckout();
 };
 
-const AddToCartButton = ({ product, quantity, navigation }) => {
+const AddToCartButton:any = ({ product, quantity, navigation }:any) => {
 
-  const addToCart = async (product) => {
+  const addToCart:any = async (product:any) => {
     try {
       const checkout = await getCheckout();
 

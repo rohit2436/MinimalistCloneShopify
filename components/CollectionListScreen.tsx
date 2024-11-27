@@ -20,11 +20,11 @@ const GET_COLLECTIONS = gql`
 
 
 
-const CollectionListScreen = ({ navigation }) => {
+const CollectionListScreen = ({ navigation }:any) => {
 
-    const [collectionid, setCollectionid] = useState();
-    const [collections, setCollections] = useState([]);
-  const [loadingbar, setLoading] = useState(true);
+    const [collectionid, setCollectionid] = useState<any>();
+    const [collections, setCollections] = useState<any>([]);
+  const [loadingbar, setLoading] = useState<any>(true);
 
 
   const { loading, error, data } = useQuery(GET_COLLECTIONS);
@@ -45,7 +45,7 @@ const CollectionListScreen = ({ navigation }) => {
     });
   }, []);
 
-  const renderCollection = ({ item }) => (
+  const renderCollection:any = ({ item }:any) => (
 
     <TouchableOpacity
           onPress={() =>
@@ -135,10 +135,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 8,
   },
-  collectionContainer: {
-    alignItems: 'center',
-    // marginHorizontal: 8,
-  },
+  // collectionContainer: {
+  //   alignItems: 'center',
+  //   // marginHorizontal: 8,
+  // },
   avatarContainer: {
     width: 100,
     height: 100,
@@ -164,13 +164,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 13,
     textAlign: 'center',
-    fontWeight: 'bold',
     fontWeight:"700",
     zIndex: 1,
     textShadowColor: 'rgba(0, 0, 0, 0.7)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 4,
-    zIndex: 1, // Ensures text is above the overlay
+    
   },
   collectionName: {
     marginTop: 8,

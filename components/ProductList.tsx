@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { AirbnbRating } from 'react-native-ratings';
 import AddToCartButton from './AddToCartButton';
 
-const ProductList = ({ navigation }) => {
+const ProductList = ({ navigation }:any) => {
 
   const { loading, error, data } = useQuery(GET_PRODUCTS);
 

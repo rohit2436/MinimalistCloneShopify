@@ -65,7 +65,7 @@ const GET_PRODUCT_DETAILS = gql`
 //   }
 // };
 
-const ProductDetailsScreen = ({ navigation,route }) => {
+const ProductDetailsScreen = ({ navigation,route }:any) => {
   const { productId } = route.params;
   console.log(productId);
 
@@ -90,6 +90,10 @@ let finalPrice = price*number;
 console.log(product?.variants?.edges[0]?.node?.id)
  const productVariants= product?.variants?.edges[0]?.node?.id;
 
+  function setModalVisible(arg0: boolean) {
+    throw new Error('Function not implemented.');
+  }
+
   return (
 
 <View>
@@ -104,7 +108,7 @@ console.log(product?.variants?.edges[0]?.node?.id)
         //   autoplayTimeout={4}
         loop
       >
-        {product.images.edges.map((image, index) => (
+        {product.images.edges.map((image:any, index:any) => (
           <View key={index} style={styles.slide}>
             <Image source={{ uri: image.node.src }} style={styles.image} />
             {/* <Text style={styles.text}>{slide.title}</Text> */}
@@ -194,7 +198,7 @@ console.log(product?.variants?.edges[0]?.node?.id)
 
                 }
               />
-              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.3} width={170} color='black' /></View>
+              <View style={styles.progressBar}><Progress.Bar progress={0.3} width={170} color='black' /></View>
               <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>17</Text>
             </View>
 
@@ -211,7 +215,7 @@ console.log(product?.variants?.edges[0]?.node?.id)
 
                 }
               />
-              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.1} width={170} color='black' /></View>
+              <View style={styles.progressBar}><Progress.Bar progress={0.1} width={170} color='black' /></View>
               <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>01</Text>
             </View>
 
@@ -227,7 +231,7 @@ console.log(product?.variants?.edges[0]?.node?.id)
 
                 }
               />
-              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0} width={170} color='black' /></View>
+              <View style={styles.progressBar}><Progress.Bar progress={0} width={170} color='black' /></View>
               <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>00</Text>
             </View>
 
@@ -243,7 +247,7 @@ console.log(product?.variants?.edges[0]?.node?.id)
 
                 }
               />
-              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.1} width={170} color='black' /></View>
+              <View style={styles.progressBar}><Progress.Bar progress={0.1} width={170} color='black' /></View>
               <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>01</Text>
             </View>
 
@@ -259,7 +263,7 @@ console.log(product?.variants?.edges[0]?.node?.id)
 
                 }
               />
-              <View style={{ alignItems: "center", justifyContent: "center", marginLeft: "20" }}><Progress.Bar progress={0.2} width={170} color='black' /></View>
+              <View style={styles.progressBar}><Progress.Bar progress={0.2} width={170} color='black' /></View>
               <Text style={{ textAlignVertical: "center", marginLeft: 10 }}>01</Text>
             </View>
 
@@ -407,6 +411,9 @@ const styles = StyleSheet.create({
   priceTextBottom:{
     fontSize:25,
     fontWeight:500
+  },
+  progressBar:{
+    alignItems: "center", justifyContent: "center", marginLeft: 20,
   }
 });
 
