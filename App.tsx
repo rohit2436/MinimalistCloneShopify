@@ -10,7 +10,7 @@ import {createDrawerNavigator} from "@react-navigation/drawer"
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-gesture-handler';
-import { ApolloClient, InMemoryCache, ApolloProvider, } from '@apollo/client';
+// import { ApolloClient, InMemoryCache, ApolloProvider, } from '@apollo/client';
 import ProductList from './components/ProductList';
 import ProductDetailsScreen from './components/ProductDetailsScreen';
 import CollectionListScreen from './components/CollectionListScreen';
@@ -103,7 +103,7 @@ const App = () => {
 
   const CheckOutPageComponent=()=>(
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="CheckoutPage" component={CheckoutPage}/>
+      <Stack.Screen name="Cart" component={CheckoutPage}/>
       <Stack.Screen name="WebViewScreen" component={WebViewScreen}/>
 
     </Stack.Navigator>

@@ -19,7 +19,7 @@ const AddToCartButton = ({ product, quantity, navigation }: any) => {
 
 
       // Navigate to Checkout page
-      navigation.navigate('CheckoutPage', { key: Date.now() });
+      navigation.navigate('Cart', { key: Date.now() });
     } catch (error) {
       console.error('Error adding to Shopify cart:', error);
     }
