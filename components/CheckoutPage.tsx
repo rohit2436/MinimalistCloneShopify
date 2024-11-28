@@ -7,7 +7,7 @@ import client from "../shopifyApi/shopifyClient";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCart, updateCartCount } from './CartContext';
+import { useCart } from './CartContext';
 
 // Create a new checkout
 const createCheckout = async () => {
@@ -20,7 +20,7 @@ const createCheckout = async () => {
 // Retrieve an existing checkout
 const getCheckout = async () => {
   console.log("get items")
-  const checkoutId = await AsyncStorage.getItem('checkoutId');
+  const checkoutId:any = await AsyncStorage.getItem('checkoutId');
   if (checkoutId) {
     return await client.checkout.fetch(checkoutId);
   }
@@ -29,16 +29,18 @@ const getCheckout = async () => {
   return createCheckout();
 };
 
-const CheckoutPage = ({ navigation }) => {
-  const [checkout, setCheckout] = useState(null);
-  const [totalPrice, setTotalPrice] = useState(0); // State for total price
-  const [address, setAddress] = useState({}); // For managing address state
-  const [isEditing, setIsEditing] = useState(false); // Track if editing address
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
-  const [contactModal, setContactModal] = useState(false);
+const CheckoutPage = ({ navigation }:any) => {
+  const [checkout, setCheckout] = useState<any>(null);
+  const [totalPrice, setTotalPrice] = useState<any>(0); // State for total price
+  const [address, setAddress] = useState<any>({}); // For managing address state
+  const [isEditing, setIsEditing] = useState<any>(false); // Track if editing address
+  const [modalVisible, setModalVisible] = useState<any>(false);
+  const [isLoading, setIsLoading] = useState<any>(true); // Loading state
+  const [contactModal, setContactModal] = useState<any>(false);
 
-  const { cartCount, updateCartCount } = useCart();
+  
+
+  const { cartCount, updateCartCount }:any = useCart();
 
   useEffect(() => {
     const fetchCheckout = async () => {
@@ -105,10 +107,10 @@ const CheckoutPage = ({ navigation }) => {
       return;
     }
 
-    const checkoutId = await AsyncStorage.getItem('checkoutId');
+    const checkoutId:any = await AsyncStorage.getItem('checkoutId');
 
     try {
-      const updatedCheckout = await client.checkout.updateShippingAddress(checkoutId, {
+      const updatedCheckout:any = await client.checkout.updateShippingAddress(checkoutId, {
         address1: address.address1,
         address2: address.address2 || null,
         city: address.city,
@@ -131,8 +133,8 @@ const CheckoutPage = ({ navigation }) => {
 
 
   // Function to calculate total price
-  const calculateTotalPrice = (lineItems) => {
-    const total = lineItems.reduce((sum, item) => {
+  const calculateTotalPrice = (lineItems:any) => {
+    const total:any = lineItems.reduce((sum:any, item:any):any => {
       return sum + item.quantity * parseFloat(item.variant.price.amount);
     }, 0);
     setTotalPrice(total);
@@ -141,9 +143,9 @@ const CheckoutPage = ({ navigation }) => {
   };
 
   // Update item quantity
-  const updateQuantity = async (lineItemId, isIncrease) => {
-    const checkoutId = await AsyncStorage.getItem('checkoutId');
-    const lineItem = checkout.lineItems.find(item => item.id === lineItemId);
+  const updateQuantity:any = async (lineItemId:any, isIncrease:any) => {
+    const checkoutId:any = await AsyncStorage.getItem('checkoutId');
+    const lineItem:any = checkout.lineItems.find((item: { id: any; }) => item.id === lineItemId);
     const newQuantity = isIncrease ? lineItem.quantity + 1 : lineItem.quantity - 1;
 
     if (newQuantity > 0) {
@@ -161,8 +163,8 @@ const CheckoutPage = ({ navigation }) => {
   };
 
   // Remove item from the checkout
-  const removeItem = async (lineItemId) => {
-    const checkoutId = await AsyncStorage.getItem('checkoutId');
+  const removeItem:any = async (lineItemId: any) => {
+    const checkoutId:any = await AsyncStorage.getItem('checkoutId');
     await client.checkout.updateLineItems(checkoutId, [
       {
         id: lineItemId,
@@ -170,7 +172,7 @@ const CheckoutPage = ({ navigation }) => {
       },
     ]);
     // Update state after removing the item
-    const updatedCheckout = await client.checkout.fetch(checkoutId);
+    const updatedCheckout: any = await client.checkout.fetch(checkoutId);
     setCheckout(updatedCheckout);
     calculateTotalPrice(updatedCheckout.lineItems); // Recalculate total price
 
@@ -458,6 +460,9 @@ export default CheckoutPage;
 
 
 const styles = StyleSheet.create({
+  loadingContainer:{
+
+  },
   greyText: {
     fontSize: 15, fontWeight: 400,
   },
@@ -468,7 +473,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     position: "absolute",
     bottom: 0,
-    Left: 0,
+    // Left: 0,
     right: 0,
     elevation: 5,
     shadowColor: "black",
@@ -484,18 +489,18 @@ const styles = StyleSheet.create({
   addressSection: { padding: 20, backgroundColor: '#f9f9f9', marginBottom: 20 },
   addressLabel: { fontSize: 18, fontWeight: 400, marginBottom: 10 },
   input: { borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 10, borderRadius: 5, flex: 1 },
-  floatCheckout: {
-    height: 80,
-    backgroundColor: 'white',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    elevation:5
-  },
+  // floatCheckout: {
+  //   height: 80,
+  //   backgroundColor: 'white',
+  //   position: 'absolute',
+  //   bottom: 0,
+  //   left: 0,
+  //   right: 0,
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   padding: 20,
+  //   elevation:5
+  // },
   item: { flexDirection: 'row', marginBottom: 20 },
 })

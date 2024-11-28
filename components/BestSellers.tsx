@@ -5,9 +5,9 @@ import client from "../shopifyApi/shopifyClient";
 import { useNavigation } from '@react-navigation/native';
 
 const BestSellers = () => {
-  const navigation = useNavigation();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const navigation = useNavigation<any>();
+  const [products, setProducts] = useState<any>([]);
+  const [loading, setLoading] = useState<any>(true);
 
   const productIds = [
     'gid://shopify/Product/8642469527701', // Product 1
@@ -38,7 +38,7 @@ const BestSellers = () => {
         {loading ? (
           <Text style={{ textAlign: "center", marginTop: 20 }}>Loading...</Text>
         ) : (
-          products.map((product, index) => (
+          products.map((product:any, index:any) => (
             <View key={index} style={{ height: 500, width: "50%", padding: 10 }}>
               <Image
                 style={{ width: "100%", height: 200 }}
