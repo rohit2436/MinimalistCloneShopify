@@ -1,8 +1,8 @@
-import { Image, StyleSheet, Text, View, Button } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { AirbnbRating } from 'react-native-ratings';
-import client from "../shopifyApi/shopifyClient";
-import { useNavigation } from '@react-navigation/native';
+import {Image, StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {AirbnbRating} from 'react-native-ratings';
+import client from '../shopifyApi/shopifyClient';
+import {useNavigation} from '@react-navigation/native';
 
 const BestSellers = () => {
   const navigation = useNavigation<any>();
@@ -16,53 +16,86 @@ const BestSellers = () => {
 
   useEffect(() => {
     // Fetch products in parallel
-    Promise.all(productIds.map((id) => client.product.fetch(id)))
-      .then((fetchedProducts) => {
+    Promise.all(productIds.map(id => client.product.fetch(id)))
+      .then(fetchedProducts => {
         setProducts(fetchedProducts);
         setLoading(false); // Stop loading after fetch
       })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
+      .catch(error => {
+        console.error('Error fetching products:', error);
         setLoading(false);
       });
   }, []);
 
   return (
     <View>
-      <Text style={{ textAlign: "left", fontWeight: "500", fontSize: 20, paddingLeft: 20 }}>
+      <Text
+        style={{
+          textAlign: 'left',
+          fontWeight: '500',
+          fontSize: 20,
+          paddingLeft: 20,
+        }}>
         Our Best Sellers
       </Text>
 
-      <View style={{ flexDirection: "row" }}>
+      <View style={{flexDirection: 'row'}}>
         {/* Check if products are loaded */}
         {loading ? (
-          <Text style={{ textAlign: "center", marginTop: 20 }}>Loading...</Text>
+          <Text style={{textAlign: 'center', marginTop: 20}}>Loading...</Text>
         ) : (
-          products.map((product:any, index:any) => (
-            <View key={index} style={{ height: 500, width: "50%", padding: 10 }}>
+          products.map((product: any, index: any) => (
+            
+            <View key={index} style={{height: 440, width: '50%', padding: 10}}>
+              <TouchableOpacity  onPress={() =>
+                  navigation.navigate('ProductDetailsScreen', {
+                    productId: product.id,
+                  })
+                }>
               <Image
-                style={{ width: "100%", height: 200 }}
-                source={{ uri: product.images[0]?.src || "https://via.placeholder.com/200" }}
+                style={{width: '100%', height: 200, objectFit: 'contain'}}
+                source={{
+                  uri:
+                    product.images[0]?.src || 'https://via.placeholder.com/200',
+                }}
               />
-              <Text style={{ paddingTop: 10, fontSize: 18, fontWeight: "500", textAlign: "left" }}>
+              <Text
+                style={{
+                  paddingTop: 10,
+                  fontSize: 18,
+                  fontWeight: '500',
+                  textAlign: 'left',
+                }}>
                 {product.title}
               </Text>
-              <View style={{ alignItems: "flex-start", paddingTop: 15,paddingBottom:20 }}>
+              <View
+                style={{
+                  alignItems: 'flex-start',
+                  paddingTop: 15,
+                  paddingBottom: 20,
+                }}>
                 <AirbnbRating
                   size={18}
                   showRating={false}
-                  selectedColor='black'
+                  selectedColor="black"
                   defaultRating={5}
                   isDisabled={true}
                 />
               </View>
+              </TouchableOpacity>
               {/* <Text style={{ fontSize: 15, paddingTop: 20, paddingBottom: 20 }}>
                 {'\u20B9'} {product.variants?.edges[0]?.node?.price || product.priceRange|| "N/A"}
               </Text> */}
-              
-              <Button color={"black"} title='See Details'
-         onPress={() => navigation.navigate('ProductDetailsScreen', { productId: product.id })}
-        />
+
+              <Button
+                color={'black'}
+                title="See Details"
+                onPress={() =>
+                  navigation.navigate('ProductDetailsScreen', {
+                    productId: product.id,
+                  })
+                }
+              />
             </View>
           ))
         )}
