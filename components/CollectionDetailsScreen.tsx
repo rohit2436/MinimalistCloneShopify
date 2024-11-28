@@ -6,6 +6,7 @@ import AddToCartButton from './AddToCartButton';
 import client from '../shopifyApi/shopifyClient';
 import shopifyClient from '../shopifyApi/shopifyClient';
 
+
 const GET_COLLECTION_DETAILS = gql`
   query GetCollectionDetails($id: ID!) {
     collection(id: $id) {
@@ -42,6 +43,7 @@ const GET_COLLECTION_DETAILS = gql`
   }
 `;
 
+
 const CollectionDetailsScreen = ({ route, navigation }:any) => {
   const { collectionId } = route.params;
   // const collectionId = "gid://shopify/Collection/324935876757";
@@ -50,8 +52,13 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
     variables: { id: collectionId },
   });
 
+
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
+
+
+
+
 
 
 
@@ -62,8 +69,10 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
       // Get the variant ID for the first variant (you can customize this for more complex cart handling)
       const variantId = product.variants.edges[0].node.id;
 
+
       // Create a cart if it doesn't exist
       let cart:any = await shopifyClient.checkout.create();
+
 
       // Add the product variant to the cart
       const lineItemsToAdd = [{
@@ -71,6 +80,7 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
         quantity: 1, // Adjust quantity if needed
       }];
       const checkout:any = await shopifyClient.checkout.addLineItems(cart.id, lineItemsToAdd);
+
 
       console.log('Product added to cart:', checkout);
       // You can also navigate to the cart screen after adding the product
@@ -81,7 +91,10 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
   };
 
 
+
+
   return (
+
 
     <FlatList
       data={data.collection.products.edges}
@@ -89,8 +102,10 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
       numColumns={2}
       renderItem={({ item }) => (
 
+
         <View style={{ height: 500, width: "50%", padding: 10 }}>
           <TouchableOpacity onPress={() => navigation.navigate('ProductDetailsScreen', { productId: item.node.id })}>
+
 
             {/* <Text>{item.node.id}</Text>
           <Text>{item.node.variants.edges[0].node.id}</Text> */}
@@ -123,14 +138,22 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
 
 
 
+
+
+
+
+
           </TouchableOpacity>
           {/* <Button color={"black"} title='Add to Cart'
             onPress={() => navigation.navigate('ProductDetailsScreen', { productId: item.node.id })}
 
+
           /> */}
 
 
-          
+
+
+         
 <AddToCartButton
             product={item.node}
             quantity={1}
@@ -138,14 +161,21 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
           />
 
 
+
+
         </View>
+
+
 
 
       )}
     />
 
+
   );
 
+
 };
+
 
 export default CollectionDetailsScreen;

@@ -1,4 +1,3 @@
-
 import { Image, StyleSheet, Text, View, Button, ScrollView, ImageBackground, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Rating, AirbnbRating } from 'react-native-ratings';
@@ -7,45 +6,71 @@ import ShopByCat from './ShopByCat';
 import Customer from './Customer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Footer from './Footer';
-import { gql, useQuery } from '@apollo/client';
+// import { gql, useQuery } from '@apollo/client';
 import CollectionListScreen from './CollectionListScreen';
 import { useNavigation } from '@react-navigation/native';
 import client from '../shopifyApi/shopifyClient';
+import { fetchProductById } from "../shopifyApi/shopifyService";
 
-const GET_COLLECTIONS = gql`
-  query GetCollectionDetails($id: ID!) {
-    collection(id: $id) {
-      products(first: 1) {
-        edges {
-          node {
-            id
-            title
-            description
-            priceRange {
-              minVariantPrice {
-                amount
-              }
-            }
-            images(first: 1) {
-              edges {
-                node {
-                  src
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+
+// const GET_COLLECTIONS = gql`
+//   query GetCollectionDetails($id: ID!) {
+//     collection(id: $id) {
+//       products(first: 1) {
+//         edges {
+//           node {
+//             id
+//             title
+//             description
+//             priceRange {
+//               minVariantPrice {
+//                 amount
+//               }
+//             }
+//             images(first: 1) {
+//               edges {
+//                 node {
+//                   src
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
+
+
 
 
 
 const Main:any = () => {
   const navigation = useNavigation<any>();
+  const [singleproduct, setSingleProduct] = useState<any>();
+ 
 
-  
+
+  const getProductById = async (productId: string) => {
+    try {
+      const product = await fetchProductById(productId);
+      setSingleProduct(product);
+      console.log("single prduct name: ", singleproduct)
+      console.log("Product details:", product);
+    } catch (error) {
+      console.error("Error fetching product by ID:", error);
+    }
+  };
+
+
+  useEffect(()=>{
+    getProductById("gid://shopify/Product/8642470215829");
+  },[])
+
+
+ 
+ 
   useEffect(() => {
     // Fetch collections with products
     client.collection.fetchAllWithProducts().then((collections) => {
@@ -56,32 +81,30 @@ const Main:any = () => {
       setLoading(false);
     });
   }, []);
-  
+ 
 
-  const { loading, error, data } = useQuery(GET_COLLECTIONS, {
-    variables: { id: "gid://shopify/Collection/324936204437" },
-  });
+
+  // const { loading, error, data } = useQuery(GET_COLLECTIONS, {
+  //   variables: { id: "gid://shopify/Collection/324936204437" },
+  // });
+
 
   const [collections, setCollections] = useState<any>([]);
   const [loadingbar, setLoading] = useState<any>(true);
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
-  // const [rating, setRating] = useState(1);
-  console.log(data.collection.products.edges[0].node.images.edges[0].node.src)
-  console.log(data.collection.products.edges[0].node.description)
-  console.log(data.collection.products.edges[0].node.title)
 
+  // if (loading) return <Text>Loading...</Text>;
+  // if (error) return <Text>Error: {error.message}</Text>;
+  // // const [rating, setRating] = useState(1);
+  // console.log(data.collection.products.edges[0].node.images.edges[0].node.src)
+  // console.log(data.collection.products.edges[0].node.description)
+  // console.log(data.collection.products.edges[0].node.title)
 
-  // client.collection.fetchAllWithProducts().then((collections) => {
-  //   // Do something with the collections
-  //   console.log("collection",collections);
-  //   console.log(collections[0].products);
-  // });
 
 
 
   const renderCollection = ({ item }:any) => (
+
 
     <TouchableOpacity
           onPress={() =>
@@ -106,10 +129,13 @@ const Main:any = () => {
     </TouchableOpacity>
   );
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />;
-  }
 
+  // if (loading) {
+  //   return <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />;
+  // }
+
+
+ 
   return (
     <ScrollView style={{backgroundColor:"white"}}>
       <TouchableOpacity onPress={()=>navigation.navigate("ProductList")}>
@@ -117,6 +143,7 @@ const Main:any = () => {
         <Text style={styles.freeText}>Get a FREE GIFT on all your orders.</Text>
       </View>
       </TouchableOpacity>
+
 
       <FlatList
       data={collections}
@@ -127,44 +154,56 @@ const Main:any = () => {
       showsHorizontalScrollIndicator={false}
     />
 
+
 <View style={{width:150,backgroundColor:"black",marginTop:12,}}>
   <Text style={{color:"white", fontSize:15, fontWeight:500,textAlign:"center",padding:3}}>New Launch</Text>
 </View>
 
 
+
+
       <View style={{ alignItems: "center", marginBottom: 20 }}>
+
 
         {/* <Text>hello {data.collections.edges.node.id}</Text> */}
         <View style={styles.main}>
           <View style={styles.imageContainer}>
-            <Image style={styles.image} source={{ uri: data.collection.products.edges[0].node.images.edges[0].node.src }} />
+            <Image style={styles.image} source={{ uri: singleproduct?.images[0]?.src }} />
           </View>
           <View style={styles.textContainer}>
             {/* <Text style={{ padding: 10, fontSize: 15, textAlign: "center" }}>New Launch</Text> */}
-            <Text style={{ padding: 10, fontSize: 30, fontWeight: 500, textAlign: "center" }}>{data.collection.products.edges[0].node.title}</Text>
-            <Text style={{ textAlign: "center", paddingBottom: 30, }}>{data.collection.products.edges[0].node.description}</Text>
+            <Text style={{ padding: 10, fontSize: 30, fontWeight: 500, textAlign: "center" }}>{singleproduct?.title}</Text>
+            <Text style={{ textAlign: "center", paddingBottom: 30, }}>{singleproduct?.description}</Text>
+
 
             <Button color={"black"} title='   See Details   '
-              onPress={() => navigation.navigate('ProductDetailsScreen', { productId: data.collection.products.edges[0].node.id })}
+              onPress={() => navigation.navigate('ProductDetailsScreen', { productId: singleproduct.id })}
             />
           </View>
 
+
         </View>
+
+
 
 
         <BestSellers />
         <TouchableOpacity onPress={() => navigation.navigate("ProductList")}>
           <View style={{ borderWidth: 2, borderColor: "black", height: 50, width: "95%", justifyContent: "center" }}>
 
+
             <Text style={{ textAlign: "center",paddingHorizontal:80 }}>View All Products</Text>
           </View>
         </TouchableOpacity>
 
+
       </View>
+
 
       <ShopByCat />
       <TouchableOpacity style={{justifyContent:"center", alignItems:"center",marginTop:20}} onPress={() => navigation.navigate("CollectionListScreen")}>
           <View style={{ borderWidth: 2, borderColor: "black", height: 50, justifyContent: "center" }}>
+
 
             <Text style={{ textAlign: "center" ,paddingHorizontal:80}}>View All Collections</Text>
           </View>
@@ -175,7 +214,14 @@ const Main:any = () => {
 
 
 
+
+
+
+
+
+
       <View style={styles.textContainer}>
+
 
         <Text style={{ padding: 10, fontSize: 30, fontWeight: 500, textAlign: "center" }}>The future of premium products</Text>
         <Text style={{ textAlign: "center", paddingBottom: 30, }}>Embrace This Amazing product, where each element is chosen for its scientific merit, offering you authentic, effective product for you.</Text>
@@ -186,24 +232,34 @@ const Main:any = () => {
         </View>
       </View>
 
+
       {/* <Customer/> */}
+
+
+
+
 
 
 
 
       <Footer />
 
+
     </ScrollView>
   )
 }
 
+
 export default Main
+
 
 const styles = StyleSheet.create({
   image: {
     height: "100%",
     width: "100%",
     resizeMode: "contain",
+
+
 
 
   },
@@ -226,6 +282,7 @@ const styles = StyleSheet.create({
     backgroundColor:"#FFBE46",
     alignItems:"center",
     justifyContent:"center",
+
 
   },
   freeText:{

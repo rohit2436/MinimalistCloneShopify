@@ -21,32 +21,32 @@ import BestSellers from './components/BestSellers';
 import client from './shopifyApi/shopifyClient';
 import {CartProvider, useCart} from "./components/CartContext"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createCheckout } from './shopifyApi/checkoutHelper';
+// import { createCheckout } from './shopifyApi/checkoutHelper';
 
 
 
 
-// Apollo Client setup
-const apolloClient = new ApolloClient({
-  uri: 'https://rohitapitesting.myshopify.com/api/2024-10/graphql.json', // Storefront API endpoint
-  cache: new InMemoryCache(),
-  headers: {
-    'X-Shopify-Storefront-Access-Token': 'a0df56357ac9e8ab29a2ebd7d92b37f5', // Use a valid Storefront API token
-  },
-});
+// // Apollo Client setup
+// const apolloClient = new ApolloClient({
+//   uri: 'https://rohitapitesting.myshopify.com/api/2024-10/graphql.json', // Storefront API endpoint
+//   cache: new InMemoryCache(),
+//   headers: {
+//     'X-Shopify-Storefront-Access-Token': 'a0df56357ac9e8ab29a2ebd7d92b37f5', // Use a valid Storefront API token
+//   },
+// });
 
 
 
-// Retrieve an existing checkout
-const getCheckout = async () => {
-  console.log("get items")
-  const checkoutId:any = await AsyncStorage.getItem('checkoutId');
-  if (checkoutId) {
-    return await client.checkout.fetch(checkoutId);
-  }
-  console.log("getCheckout", checkoutId)
-  return createCheckout();
-};
+// // Retrieve an existing checkout
+// const getCheckout = async () => {
+//   console.log("get items")
+//   const checkoutId:any = await AsyncStorage.getItem('checkoutId');
+//   if (checkoutId) {
+//     return await client.checkout.fetch(checkoutId);
+//   }
+//   console.log("getCheckout", checkoutId)
+//   return createCheckout();
+// };
 
 
 const App = () => {
@@ -65,17 +65,17 @@ const App = () => {
 
 
   
-useEffect(() => {
-  const fetchCheckout = async () => {
+// useEffect(() => {
+//   const fetchCheckout = async () => {
    
-    const checkoutData = await getCheckout();
-    // setCheckout(checkoutData);
-    // calculateTotalPrice(checkoutData.lineItems); // Calculate total price
-    console.log("checkout data:", checkoutData)   
-  };
+//     const checkoutData = await getCheckout();
+//     // setCheckout(checkoutData);
+//     // calculateTotalPrice(checkoutData.lineItems); // Calculate total price
+//     console.log("checkout data:", checkoutData)   
+//   };
 
-  fetchCheckout();
-}, []);
+//   fetchCheckout();
+// }, []);
 
 
 
@@ -126,7 +126,7 @@ useEffect(() => {
 
   return (
 
-<ApolloProvider client={apolloClient}>
+
     <NavigationContainer>
      
 
@@ -137,27 +137,27 @@ useEffect(() => {
           tabBarIcon:() => {
             return<Icon name={"home"} size={22} color={"black"} />;
          },
-          headerRight: ()=>(
-            <View style={{flexDirection:"row"}}>
+          // headerRight: ()=>(
+          //   <View style={{flexDirection:"row"}}>
 
-              {
-                search?<TouchableOpacity style={{marginRight:20}} onPress={()=>setSearch(false)}>
-                <Icon name="search" size={25}/>
-              </TouchableOpacity>
-              :
-              <View style={{borderRadius:20,borderWidth:1,width:170,height:40, marginRight:20,flexDirection:"row"}}>
-                <TextInput placeholder='Search Products' style={{flex:1,paddingLeft:10}}/>
-                <View style={{marginRight:10,justifyContent:"center"}}><Icon name="search" size={15} color="grey" /></View>
-                </View>
-              }
+          //     {
+          //       search?<TouchableOpacity style={{marginRight:20}} onPress={()=>setSearch(false)}>
+          //       <Icon name="search" size={25}/>
+          //     </TouchableOpacity>
+          //     :
+          //     <View style={{borderRadius:20,borderWidth:1,width:170,height:40, marginRight:20,flexDirection:"row"}}>
+          //       <TextInput placeholder='Search Products' style={{flex:1,paddingLeft:10}}/>
+          //       <View style={{marginRight:10,justifyContent:"center"}}><Icon name="search" size={15} color="grey" /></View>
+          //       </View>
+          //     }
             
 
-            <TouchableOpacity style={{marginRight:20}}>
-              <Icon name="shopping-cart" size={25}/>
-            </TouchableOpacity>
-            </View>
+          //   <TouchableOpacity style={{marginRight:20}}>
+          //     <Icon name="shopping-cart" size={25}/>
+          //   </TouchableOpacity>
+          //   </View>
             
-          )
+          // )
         }}
         
         />
@@ -166,27 +166,27 @@ useEffect(() => {
           tabBarIcon:() => {
             return<Icon name={"th-large"} size={22} color={"black"} />;
          },
-          headerRight: ()=>(
-            <View style={{flexDirection:"row"}}>
+          // headerRight: ()=>(
+          //   <View style={{flexDirection:"row"}}>
 
-              {
-                search?<TouchableOpacity style={{marginRight:20}} onPress={()=>setSearch(false)}>
-                <Icon name="search" size={25}/>
-              </TouchableOpacity>
-              :
-              <View style={{borderRadius:20,borderWidth:1,width:170,height:40, marginRight:20,flexDirection:"row"}}>
-                <TextInput placeholder='Search Products' style={{flex:1,paddingLeft:10}}/>
-                <View style={{marginRight:10,justifyContent:"center"}}><Icon name="search" size={15} color="grey" /></View>
-                </View>
-              }
+          //     {
+          //       search?<TouchableOpacity style={{marginRight:20}} onPress={()=>setSearch(false)}>
+          //       <Icon name="search" size={25}/>
+          //     </TouchableOpacity>
+          //     :
+          //     <View style={{borderRadius:20,borderWidth:1,width:170,height:40, marginRight:20,flexDirection:"row"}}>
+          //       <TextInput placeholder='Search Products' style={{flex:1,paddingLeft:10}}/>
+          //       <View style={{marginRight:10,justifyContent:"center"}}><Icon name="search" size={15} color="grey" /></View>
+          //       </View>
+          //     }
             
 
-            <TouchableOpacity style={{marginRight:20}}>
-              <Icon name="shopping-cart" size={25}/>
-            </TouchableOpacity>
-            </View>
+          //   <TouchableOpacity style={{marginRight:20}}>
+          //     <Icon name="shopping-cart" size={25}/>
+          //   </TouchableOpacity>
+          //   </View>
             
-          )
+          // )
         }}
         
         />
@@ -202,7 +202,7 @@ useEffect(() => {
 
 
 
-<Tab.Screen name="CheckoutPage" component={CheckOutPageComponent}  options={{
+<Tab.Screen name="Cart" component={CheckOutPageComponent}  options={{
   tabBarBadge: cartCount > 0 ? cartCount : 0, // Show badge only if cartCount > 0
   tabBarBadgeStyle:{backgroundColor:"black", color:"white",fontWeight:800,borderColor:"white",borderWidth:1},
   
@@ -218,7 +218,7 @@ useEffect(() => {
       </Tab.Navigator>
     </NavigationContainer>
 
-    </ApolloProvider>
+    
     
     
   )
