@@ -462,6 +462,7 @@ console.log("varientid-----",variantId)
 
 
         <Footer />
+        <View style={{marginBottom:100}}/>
       </ScrollView>
 
 
@@ -490,8 +491,11 @@ console.log("varientid-----",variantId)
               price: product.variants.edges[0].node.price.amount,
               quantity:number
             }),navigation.navigate("Cart",{productId})}}/> */}
+            
         </View>
+        
       </View>
+      
     </View>
   );
 };

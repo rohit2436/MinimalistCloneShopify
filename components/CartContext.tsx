@@ -16,7 +16,7 @@ interface CartProviderProps {
 
 // CartProvider component
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [cartCount, setCartCount] = useState<number>(3); // Initial cart count
+  const [cartCount, setCartCount] = useState<any>(); // Initial cart count
 
   const updateCartCount = (count: number) => {
     setCartCount(count);

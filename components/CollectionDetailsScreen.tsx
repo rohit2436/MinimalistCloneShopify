@@ -65,7 +65,7 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
           >
             <Image
               source={{ uri: item.images[0]?.src }}
-              style={{ width: '100%', height: 200 }}
+              style={{ width: '100%', height: 200, objectFit:"contain" }}
             />
             <View style={{ height: 100 }}>
               <Text

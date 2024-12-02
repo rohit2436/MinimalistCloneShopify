@@ -22,11 +22,11 @@ const CollectionListScreen = ({navigation}: any) => {
     // Fetch collections with products
     client.collection
       .fetchAllWithProducts()
-      .then(collections => {
+      .then((collections: any) => {
         setCollections(collections);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error: any) => {
         console.error('Error fetching collections:', error);
         setLoading(false);
       });
@@ -56,7 +56,7 @@ const CollectionListScreen = ({navigation}: any) => {
 
   return (
     <ScrollView>
-      <View style={{marginBottom: 20}}>
+      <View >
         <View>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -72,7 +72,7 @@ const CollectionListScreen = ({navigation}: any) => {
                   style={{
                     padding: 20,
                     height: 120,
-                    width: 'auto',
+                    width: '100%',
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -105,7 +105,7 @@ const CollectionListScreen = ({navigation}: any) => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingVertical: 16,
+    paddingTop: 10,
     paddingHorizontal: 8,
   },
 
@@ -155,17 +155,18 @@ const styles = StyleSheet.create({
   },
   gridContainer: {
     padding: 8,
+    // justifyContent:"center",
+    // alignItems: "center",
   },
   rowContainer: {
     marginBottom: 16,
   },
   collectionContainer: {
+    justifyContent:"center",
     alignItems: 'center',
-    marginHorizontal: 8,
-    marginLeft: 33,
-    marginBottom: 16,
+    marginHorizontal: "2%",
     flex: 1,
-    maxWidth: '33%',
+    width:"100%",
   },
 });
 
