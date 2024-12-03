@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
   ImageBackground,
+  Modal,
 } from 'react-native';
 import client from '../shopifyApi/shopifyClient';
 
@@ -17,16 +18,18 @@ const CollectionListScreen = ({navigation}: any) => {
   const [collections, setCollections] = useState<any>([]);
   const [loadingbar, setLoading] = useState<any>(true);
 
-
+//gid://shopify/Collection/324936171669
+//gid://shopify/CollectionImage/1622995796117
   useEffect(() => {
     // Fetch collections with products
     client.collection
       .fetchAllWithProducts()
-      .then(collections => {
+      .then((collections: any) => {
         setCollections(collections);
         setLoading(false);
+        console.log(collections);
       })
-      .catch(error => {
+      .catch((error: any) => {
         console.error('Error fetching collections:', error);
         setLoading(false);
       });
@@ -36,8 +39,9 @@ const CollectionListScreen = ({navigation}: any) => {
   const renderCollection: any = ({item}: any) => (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('CollectionDetailsScreen', {collectionId: item.id})
+        navigation.navigate('CollectionDetailsScreen', {collectionId: item.id,  productName: item.title})
       }>
+        
       <View style={styles.collectionContainer}>
         {/* Circle with Collection Image */}
         <View style={styles.avatarContainer}>
@@ -56,7 +60,16 @@ const CollectionListScreen = ({navigation}: any) => {
 
   return (
     <ScrollView>
-      <View style={{marginBottom: 20}}>
+      {
+        loadingbar?
+      <Modal visible={true}>
+        <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+        <ActivityIndicator color="#000" />
+        </View>
+      </Modal>
+      :null
+}
+      <View >
         <View>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -72,7 +85,7 @@ const CollectionListScreen = ({navigation}: any) => {
                   style={{
                     padding: 20,
                     height: 120,
-                    width: 'auto',
+                    width: '100%',
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -87,7 +100,7 @@ const CollectionListScreen = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
 
-
+<View style={{justifyContent:"center",alignItems:"center"}}>
         <FlatList
           data={collections}
           renderItem={renderCollection}
@@ -97,6 +110,7 @@ const CollectionListScreen = ({navigation}: any) => {
           contentContainerStyle={styles.listContainer}
           showsHorizontalScrollIndicator={false}
         />
+        </View>
       </View>
     </ScrollView>
   );
@@ -105,7 +119,7 @@ const CollectionListScreen = ({navigation}: any) => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingVertical: 16,
+    paddingTop: 10,
     paddingHorizontal: 8,
   },
 
@@ -155,17 +169,18 @@ const styles = StyleSheet.create({
   },
   gridContainer: {
     padding: 8,
+    // justifyContent:"center",
+    // alignItems: "center",
   },
   rowContainer: {
     marginBottom: 16,
   },
   collectionContainer: {
+    justifyContent:"center",
     alignItems: 'center',
-    marginHorizontal: 8,
-    marginLeft: 33,
-    marginBottom: 16,
+    marginHorizontal: "2%",
     flex: 1,
-    maxWidth: '33%',
+    width:"100%",
   },
 });
 

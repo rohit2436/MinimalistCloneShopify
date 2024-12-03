@@ -11,7 +11,7 @@ const Customer = () => {
 
 
 
-        <View style={{ borderWidth: 1, borderRadius: 10, height: 300, width: 399, padding: 20 }}>
+        <View style={{ borderWidth: 1, borderRadius: 10, height: 300, width: "100%", padding: 10 }}>
 
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Text style={{ fontSize: 15, fontWeight: 500 }}>Mohit Kumar</Text>

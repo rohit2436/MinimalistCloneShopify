@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { fetchCollectionById, addLineItemsToCheckout } from '../shopifyApi/shopifyService'; // Adjust path to your service file
 
@@ -7,6 +7,15 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
   const [collection, setCollection] = useState<any>(null);
   const [loading, setLoading] = useState<any>(true);
   const [error, setError] = useState<any>(null);
+  const { productName } = route.params;
+  
+  console.log("name------",productName)
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: productName, // Set the header title to the product name
+    });
+  }, [navigation, productName]);
+    
 
   // Fetch collection details
   useEffect(() => {
@@ -49,10 +58,16 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
   };
 
   // Handle loading and error states
-  if (loading) return <ActivityIndicator size="large" color="#000" />;
+  if (loading) return (
+  <View style={{flex:1, justifyContent:"center", alignItems:"center"}}><ActivityIndicator color="#000" /></View>)
   if (error) return <Text>Error: {error}</Text>;
   console.log("collection details", collection.products[0].variants[0].price.amount)
 
+
+
+  
+
+  
   return (
     <FlatList
       data={collection.products}
@@ -61,11 +76,11 @@ const CollectionDetailsScreen = ({ route, navigation }:any) => {
       renderItem={({ item }) => (
         <View style={{ height: 500, width: '50%', padding: 10 }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('ProductDetailsScreen', { productId: item.id })}
+            onPress={() => navigation.navigate('ProductDetailsScreen', { productId: item.id, productName: item.title },)}
           >
             <Image
               source={{ uri: item.images[0]?.src }}
-              style={{ width: '100%', height: 200 }}
+              style={{ width: '100%', height: 200, objectFit:"contain" }}
             />
             <View style={{ height: 100 }}>
               <Text

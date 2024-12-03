@@ -7,7 +7,7 @@ const Footer = () => {
     return (
         <View>
 
-            <View style={{ backgroundColor: "black", width: "100%", height: 820, marginBottom: 40, marginTop: 20, padding: 20 }}>
+            <View style={{ backgroundColor: "black", width: "100%", height: 820, marginTop: 20, padding: 20 }}>
 
                 <Text style={{ color: "white", paddingTop: 40, fontSize: 20, fontWeight: "bold", paddingBottom: 10 }}>About Us</Text>
                 <Text style={{ fontSize: 16, color: "white", paddingBottom: 10 }}>Our values</Text>

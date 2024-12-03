@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, Button, ScrollView, ImageBackground, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native'
+import { Image, StyleSheet, Text, View, Button, ScrollView, ImageBackground, TouchableOpacity, FlatList, ActivityIndicator, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import BestSellers from './BestSellers';
@@ -73,10 +73,10 @@ const Main:any = () => {
  
   useEffect(() => {
     // Fetch collections with products
-    client.collection.fetchAllWithProducts().then((collections) => {
+    client.collection.fetchAllWithProducts().then((collections: any) => {
       setCollections(collections);
       setLoading(false);
-    }).catch((error) => {
+    }).catch((error: any) => {
       console.error('Error fetching collections:', error);
       setLoading(false);
     });
@@ -109,7 +109,7 @@ const Main:any = () => {
     <TouchableOpacity
           onPress={() =>
             // navigation.navigate('CollectionDetails', { collectionId: 'gid://shopify/Collection/324935843989' })
-            navigation.navigate('CollectionDetailsScreen', { collectionId: item.id })
+            navigation.navigate('CollectionDetailsScreen', { collectionId: item.id ,productName: item.title})
           }
         >
     <View style={styles.collectionContainer}>
@@ -134,10 +134,36 @@ const Main:any = () => {
   //   return <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />;
   // }
 
-
  
+
+  
+
   return (
+    
     <ScrollView style={{backgroundColor:"white"}}>
+      {
+        loadingbar?
+      <Modal visible={true}>
+        <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+        <ActivityIndicator color="#000" />
+        </View>
+      </Modal>
+      :null
+}
+      {/* <View>
+        {
+          loadingbar? 
+          <><View>
+
+              <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+                <ActivityIndicator />
+              </View>
+
+            </View><Text>Loading</Text></>
+          :<Text> Item loaded</Text>
+        }
+      </View> */}
+      
       <TouchableOpacity onPress={()=>navigation.navigate("ProductList")}>
       <View style={styles.freecontainer}>
         <Text style={styles.freeText}>Get a FREE GIFT on all your orders.</Text>
