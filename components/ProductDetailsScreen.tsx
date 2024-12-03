@@ -1,5 +1,5 @@
 // ProductDetailsScreen.js
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Button,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 import {gql, useQuery} from '@apollo/client';
 import Swiper from 'react-native-swiper';
@@ -26,6 +27,8 @@ import AddToCartButton from './AddToCartButton';
 import {Rating, AirbnbRating} from 'react-native-ratings';
 import * as Progress from 'react-native-progress';
 import { fetchProductById } from "../shopifyApi/shopifyService";
+
+
 
 
 // image carousel
@@ -90,10 +93,13 @@ const ProductDetailsScreen = ({navigation, route}: any) => {
   console.log(productId);
   const [productdetail, setProductDetails]= useState<any>(null);
 
-
-
-
-
+  const { productName } = route.params;
+  console.log("name------",productName)
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: productName, // Set the header title to the product name
+    });
+  }, [navigation, productName]);
 
   const getProductById = async (productId: string) => {
     try {
@@ -135,8 +141,9 @@ const ProductDetailsScreen = ({navigation, route}: any) => {
 
   if (!product) {
     return (
-      <View>
-        <Text>Loading...</Text>
+      <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+        
+        <ActivityIndicator color="#000" />
       </View>
     );
   }

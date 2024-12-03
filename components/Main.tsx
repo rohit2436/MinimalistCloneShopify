@@ -109,7 +109,7 @@ const Main:any = () => {
     <TouchableOpacity
           onPress={() =>
             // navigation.navigate('CollectionDetails', { collectionId: 'gid://shopify/Collection/324935843989' })
-            navigation.navigate('CollectionDetailsScreen', { collectionId: item.id })
+            navigation.navigate('CollectionDetailsScreen', { collectionId: item.id ,productName: item.title})
           }
         >
     <View style={styles.collectionContainer}>
@@ -145,7 +145,7 @@ const Main:any = () => {
         loadingbar?
       <Modal visible={true}>
         <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
-        <ActivityIndicator/>
+        <ActivityIndicator color="#000" />
         </View>
       </Modal>
       :null

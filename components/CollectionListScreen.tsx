@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ScrollView,
   ImageBackground,
+  Modal,
 } from 'react-native';
 import client from '../shopifyApi/shopifyClient';
 
@@ -17,7 +18,8 @@ const CollectionListScreen = ({navigation}: any) => {
   const [collections, setCollections] = useState<any>([]);
   const [loadingbar, setLoading] = useState<any>(true);
 
-
+//gid://shopify/Collection/324936171669
+//gid://shopify/CollectionImage/1622995796117
   useEffect(() => {
     // Fetch collections with products
     client.collection
@@ -25,6 +27,7 @@ const CollectionListScreen = ({navigation}: any) => {
       .then((collections: any) => {
         setCollections(collections);
         setLoading(false);
+        console.log(collections);
       })
       .catch((error: any) => {
         console.error('Error fetching collections:', error);
@@ -36,8 +39,9 @@ const CollectionListScreen = ({navigation}: any) => {
   const renderCollection: any = ({item}: any) => (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('CollectionDetailsScreen', {collectionId: item.id})
+        navigation.navigate('CollectionDetailsScreen', {collectionId: item.id,  productName: item.title})
       }>
+        
       <View style={styles.collectionContainer}>
         {/* Circle with Collection Image */}
         <View style={styles.avatarContainer}>
@@ -56,6 +60,15 @@ const CollectionListScreen = ({navigation}: any) => {
 
   return (
     <ScrollView>
+      {
+        loadingbar?
+      <Modal visible={true}>
+        <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+        <ActivityIndicator color="#000" />
+        </View>
+      </Modal>
+      :null
+}
       <View >
         <View>
           <TouchableOpacity
@@ -87,7 +100,7 @@ const CollectionListScreen = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
 
-
+<View style={{justifyContent:"center",alignItems:"center"}}>
         <FlatList
           data={collections}
           renderItem={renderCollection}
@@ -97,6 +110,7 @@ const CollectionListScreen = ({navigation}: any) => {
           contentContainerStyle={styles.listContainer}
           showsHorizontalScrollIndicator={false}
         />
+        </View>
       </View>
     </ScrollView>
   );

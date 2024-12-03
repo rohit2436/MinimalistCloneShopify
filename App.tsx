@@ -28,7 +28,31 @@ import {CartProvider, useCart} from './components/CartContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Account from './components/Account';
 import {Image} from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
+import LottieView from 'lottie-react-native';
+import { HeaderTitle } from '@react-navigation/elements';
+
+
+
+
+
+
+
+
+
+const Splash = ({ navigation }:any) => {
+  useEffect(() => {
+    // Simulate loading or API call
+    setTimeout(() => {
+      navigation.replace('MainApp'); // Navigate to the main app after 2 seconds
+    }, 2000);
+  }, [navigation]);
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+       <LottieView style={{height:300,width:300}} source={require('./components/shop.json')} autoPlay loop />
+    </View>
+  );
+};
 // import { createCheckout } from './shopifyApi/checkoutHelper';
 
 // // Apollo Client setup
@@ -86,15 +110,18 @@ const App = () => {
   }
 
   const HomeStackNavigator = () => (
-    <Stack.Navigator screenOptions={{headerShown: false}}
+    <Stack.Navigator screenOptions={{headerShown: true}}
+    
     
     >
       <Stack.Screen
         name="CollectionListScreen"
-        component={CollectionListScreen}
+        component={CollectionListScreen} options={{title:"Collections"}}
       />
-      <Stack.Screen name="Home" component={Main} />
-      <Stack.Screen name="ProductList" component={ProductList} />
+      <Stack.Screen name="Home" component={Main} 
+      
+      />
+      <Stack.Screen name="ProductList" component={ProductList} options={{title:"Product"}}/>
       <Stack.Screen
         name="ProductDetailsScreen"
         component={ProductDetailsScreen}
@@ -114,9 +141,9 @@ const App = () => {
   );
 
   const HomeComponent = () => (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{headerShown: true}}>
       <Stack.Screen name="Home" component={Main} />
-      <Stack.Screen name="ProductList" component={ProductList} />
+      <Stack.Screen name="ProductList" component={ProductList} options={{title:"Product"}}/>
       <Stack.Screen
         name="CollectionListScreen"
         component={CollectionListScreen}
@@ -133,13 +160,17 @@ const App = () => {
     </Stack.Navigator>
   );
 
-  return (
-    <NavigationContainer>
+
+
+
+  const MainApp=()=>(
       <Tab.Navigator initialRouteName="Home">
+        
         <Tab.Screen
           name="Home"
           component={HomeComponent}
           options={{
+            headerShown:false,
             tabBarIcon: () => {
               return <Icon name={'home'} size={22} color={'black'} />;
             },
@@ -169,7 +200,7 @@ const App = () => {
           name="Collection"
           component={HomeStackNavigator}
           options={{
-            
+            headerShown:false,
             tabBarIcon: () => {
               return <Icon name={'th-large'} size={22} color={'black'} />;
             },
@@ -251,7 +282,15 @@ const App = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
+    
+  )
+  return (
+    <NavigationContainer>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Splash" component={Splash} />
+      <Stack.Screen name="MainApp" component={MainApp} />
+    </Stack.Navigator>
+  </NavigationContainer>
   );
 };
 

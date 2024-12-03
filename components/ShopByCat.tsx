@@ -6,10 +6,16 @@ import {
   Button,
   ScrollView,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+
+//gid://shopify/Collection/324936171669
+//gid://shopify/Collection/324936204437
 
 const ShopByCat = () => {
+  const navigation = useNavigation<any>();
   return (
     <View>
       <View>
@@ -25,47 +31,60 @@ const ShopByCat = () => {
           Shop By Category
         </Text>
         <View style={{flexDirection: 'row'}}>
-          <View style={{padding: 10, height: 180, width: "50%"}}>
-            {/* <ImageBackground style={{ height: 150, width: 185 }} source={{ uri: "https://sfycdn.speedsize.com/56385b25-4e17-4a9a-9bec-c421c18686fb/https://beminimalist.co/cdn/shop/files/29_1600x.png?v=1723184721" }} > */}
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(90, 90, 90,0.7)',
-                alignSelf: 'stretch',
-              }}>
-              <Text style={{fontSize: 20, fontWeight: 500, color: 'white'}}>
-                {' '}
-                Men
-              </Text>
+          <TouchableOpacity
+            style={{width: '50%'}}
+            onPress={() =>
+              navigation.navigate('CollectionDetailsScreen', {
+                collectionId: 'gid://shopify/Collection/324936171669',
+              })
+            }>
+            <View style={{padding: 10, height: 180}}>
+              {' '}
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'rgba(90, 90, 90,0.7)',
+                  alignSelf: 'stretch',
+                }}>
+                <Text style={{fontSize: 20, fontWeight: 500, color: 'white'}}>
+                  {' '}
+                  Men
+                </Text>
+              </View>
             </View>
-            {/* </ImageBackground> */}
-            {/* <Text style={{textAlign:"center", fontSize:15,paddingTop:10}}>Lip</Text> */}
-          </View>
+          </TouchableOpacity>
 
-          <View
-            style={{padding: 10, paddingLeft: -10, height: 180, width: "50%"}}>
-            {/* <ImageBackground style={{ height: 150, width: 185 }} 
-            source={{ uri: "https://sfycdn.speedsize.com/56385b25-4e17-4a9a-9bec-c421c18686fb/https://beminimalist.co/cdn/shop/files/29_1600x.png?v=1723184721"
-              
-             }} > */}
+          <TouchableOpacity
+            style={{width: '90%'}}
+            onPress={() =>
+              navigation.navigate('CollectionDetailsScreen', {
+                collectionId: 'gid://shopify/Collection/324936204437',
+              })
+            }>
             <View
               style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(90, 90, 90,0.7)',
-                alignSelf: 'stretch',
+                padding: 10,
+                paddingLeft: -10,
+                height: 180,
+                width: '50%',
               }}>
-              <Text style={{fontSize: 20, fontWeight: 500, color: 'white'}}>
-                {' '}
-                Women
-              </Text>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'rgba(90, 90, 90,0.7)',
+                  alignSelf: 'stretch',
+                }}>
+                <Text style={{fontSize: 20, fontWeight: 500, color: 'white'}}>
+                  {' '}
+                  Women
+                </Text>
+              </View>
             </View>
-            {/* </ImageBackground> */}
-            {/* <Text style={{textAlign:"center", fontSize:15,paddingTop:10}}>Lip</Text> */}
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

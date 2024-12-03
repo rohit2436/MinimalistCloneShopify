@@ -51,6 +51,33 @@ const CheckoutPage = ({navigation}: any) => {
   const [addressButton, setaddressButton] = useState<string>("Change");
 
   const {cartCount, updateCartCount}: any = useCart();
+  const hasCartItems = checkout?.lineItems?.length > 0;
+  console.log('Has Cart Items:', hasCartItems);
+
+
+
+
+
+  const [errors, setErrors] = useState<any>({});
+const [isAddressValid, setIsAddressValid] = useState<any>(false);
+
+// Address validation function
+const validateAddress = () => {
+    const newErrors:any = {};
+
+    if (!address.firstName) newErrors.firstName = 'First name is required.';
+    if (!address.lastName) newErrors.lastName = 'Last name is required.';
+    if (!address.phone || !/^[0-9]+$/.test(address.phone)) newErrors.phone = 'Valid phone number is required.';
+    if (!address.address1) newErrors.address1 = 'Address Line 1 is required.';
+    if (!address.city) newErrors.city = 'City is required.';
+    if (!address.province) newErrors.province = 'State/Province is required.';
+    if (!address.country) newErrors.country = 'Country is required.';
+    if (!address.zip || !/^\d{5,6}$/.test(address.zip)) newErrors.zip = 'ZIP code must be 5 or 6 digits.';
+
+    setErrors(newErrors);
+    setIsAddressValid(Object.keys(newErrors).length === 0);
+};
+
 
   useEffect(() => {
     const fetchCheckout = async () => {
@@ -92,12 +119,17 @@ const CheckoutPage = ({navigation}: any) => {
   );
 
   const saveAddress = async () => {
-    console.log('saved section address');
-    await AsyncStorage.setItem('address', JSON.stringify(address));
-    setIsEditing(false);
-    setaddressButton("Change")
-    
-  };
+    validateAddress();
+
+    if (isAddressValid) {
+        await AsyncStorage.setItem('address', JSON.stringify(address));
+        setIsEditing(false);
+        setContactModal(false);
+    } else {
+        console.log('Address has validation errors:', errors);
+    }
+};
+
 
   const handleCheckout = async () => {
     if (
@@ -128,7 +160,7 @@ const CheckoutPage = ({navigation}: any) => {
           firstName: address.firstName,
           lastName: address.lastName,
           zip: address.zip,
-          phone: address.phone || null,
+          phone: address.phone ||null,
         },
       );
       //  console.log("updated checkout", updatedCheckout.shippingAddress)
@@ -206,199 +238,31 @@ const CheckoutPage = ({navigation}: any) => {
         <View style={styles.addressSection}>
           {isEditing ? (
             <Modal
-              animationType="slide"
-              transparent={false}
-              visible={contactModal}
-              onRequestClose={() => {
-                setContactModal(false); // Handle back button press on Android
-              }}>
-              <ScrollView style={{padding: 15, backgroundColor: 'white'}}>
-                (
-                <View>
-                  <Text style={styles.addressLabel}>Contact Information</Text>
-
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    First Name
-                  </Text>
-                  <TextInput
-                    placeholder="First Name"
-                    placeholderTextColor={'grey'}
-                    value={address.firstName || ''}
-                    onChangeText={text =>
-                      setAddress({...address, firstName: text})
-                    }
-                    style={styles.input}
-                  />
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    Last Name
-                  </Text>
-                  <TextInput
-                    placeholder="Last Name"
-                    placeholderTextColor={'grey'}
-                    value={address.lastName || ''}
-                    onChangeText={text =>
-                      setAddress({...address, lastName: text})
-                    }
-                    style={styles.input}
-                  />
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    Phone Number
-                  </Text>
-                  <TextInput
-                    placeholder="Phone Number"
-                    placeholderTextColor={'grey'}
-                    value={address.phone || ''}
-                    onChangeText={text => setAddress({...address, phone: text})}
-                    style={styles.input}
-                  />
-
-                  <Text style={[styles.addressLabel, {marginTop: 25}]}>
-                    Shipping Address
-                  </Text>
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    Address Line 1
-                  </Text>
-                  <TextInput
-                    placeholder="Address Line 1"
-                    placeholderTextColor={'grey'}
-                    value={address.address1 || ''}
-                    onChangeText={text =>
-                      setAddress({...address, address1: text})
-                    }
-                    style={styles.input}
-                  />
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    Address Line 2
-                  </Text>
-                  <TextInput
-                    placeholder="Address Line 2"
-                    placeholderTextColor={'grey'}
-                    value={address.address2 || ''}
-                    onChangeText={text =>
-                      setAddress({...address, address2: text})
-                    }
-                    style={styles.input}
-                  />
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    City
-                  </Text>
-                  <TextInput
-                    placeholder="City"
-                    placeholderTextColor={'grey'}
-                    value={address.city || ''}
-                    onChangeText={text => setAddress({...address, city: text})}
-                    style={styles.input}
-                  />
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    State
-                  </Text>
-                  <TextInput
-                    placeholder="State/Province"
-                    placeholderTextColor={'grey'}
-                    value={address.province || ''}
-                    onChangeText={text =>
-                      setAddress({...address, province: text})
-                    }
-                    style={styles.input}
-                  />
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    Country
-                  </Text>
-                  <TextInput
-                    placeholder="Country"
-                    placeholderTextColor={'grey'}
-                    value={address.country || ''}
-                    onChangeText={text =>
-                      setAddress({...address, country: text})
-                    }
-                    style={styles.input}
-                  />
-                  <Text
-                    style={{
-                      textAlignVertical: 'center',
-                      fontSize: 15,
-                      fontWeight: 500,
-                      marginBottom: 10,
-                      marginTop: 10,
-                    }}>
-                    Postal Code
-                  </Text>
-                  <TextInput
-                    placeholder="Postal Code"
-                    placeholderTextColor={'grey'}
-                    value={address.zip || ''}
-                    onChangeText={text => setAddress({...address, zip: text})}
-                    style={styles.input}
-                  />
-
-                  <Button
-                    title="Save Address"
-                    color={'black'}
-                    onPress={() => {
-                      saveAddress(), setContactModal(false);
-                    }}
-                  />
-                  <View style={{marginBottom: 50}}></View>
-                </View>
-                )
-              </ScrollView>
-            </Modal>
+            animationType="slide"
+            transparent={false}
+            visible={contactModal}
+            onRequestClose={() => setContactModal(false)}
+          >
+            <ScrollView style={{ padding: 15, backgroundColor: 'white' }}>
+              <View>
+                <Text style={styles.addressLabel}>Contact Information</Text>
+                {['firstName', 'lastName', 'phone', 'address1', 'city', 'province', 'country', 'zip'].map((field) => (
+                  <View key={field}>
+                    <Text style={styles.label}>{field}</Text>
+                    <TextInput
+                      placeholder={field}
+                      value={address[field] || ''}
+                      onChangeText={(text) => setAddress({ ...address, [field]: text })}
+                      style={styles.input}
+                    />
+                    {errors[field] && <Text style={styles.error}>{errors[field]}</Text>}
+                  </View>
+                ))}
+                <Button title="Save Address" color="black" onPress={saveAddress} />
+              </View>
+            </ScrollView>
+          </Modal>
+          
           ) : (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <View
@@ -592,6 +456,10 @@ const CheckoutPage = ({navigation}: any) => {
           )}
         />
 
+{!hasCartItems? <View style={{flex:1, height:300, width:"100%",justifyContent:"center",alignItems:"center"}}>
+      <Text style={{fontSize:15,justifyContent:"center", alignItems:"center"}}>No items for checkout.</Text>
+    </View>: null}
+
         <View
           style={{
             height: 250,
@@ -662,6 +530,11 @@ const CheckoutPage = ({navigation}: any) => {
 
       {/* floating checkout view  */}
 
+
+
+ 
+
+
       <View style={styles.floatCheckout}>
         <View>
           <Text style={{fontSize: 20, fontWeight: 600, marginBottom: 5}}>
@@ -675,6 +548,7 @@ const CheckoutPage = ({navigation}: any) => {
           <Button
             title="Checkout"
             color={'black'}
+            disabled={!hasCartItems}
             //  onPress={() => navigation.navigate('WebViewScreen', { url: checkout.webUrl })}
             onPress={() => handleCheckout()}
           />
@@ -688,6 +562,19 @@ export default CheckoutPage;
 
 const styles = StyleSheet.create({
   loadingContainer: {},
+  emptyCartContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f9f9f9',
+  },
+  emptyCartText: {
+    fontSize: 18,
+    color: 'grey',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   greyText: {
     fontSize: 15,
     fontWeight: 400,
@@ -733,4 +620,13 @@ const styles = StyleSheet.create({
   //   elevation:5
   // },
   item: {flexDirection: 'row', marginBottom: 20},
+  error: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 10,
+},
+label:{
+  fontSize:20
+  ,paddingBottom:10
+}
 });
